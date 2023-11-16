@@ -7,9 +7,12 @@ import { Header } from "../../components/Header";
 import github from "../../assets/icons/github.svg";
 import building from "../../assets/icons/building.svg";
 import user from "../../assets/icons/user.svg";
+import { api } from "../../server/axios";
 
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
+
+import Markdown from 'react-markdown'
 
 export function Post() {
   const params = useParams();
@@ -19,7 +22,6 @@ export function Post() {
   const publishedAtFormated = new Date(
     gitHubData.created_at === undefined ? new Date() : gitHubData.created_at
   );
-  console.log(gitHubData.created_at);
 
   const publishedDateFormatted = new Intl.DateTimeFormat("pt-BR", {
     day: "2-digit",
@@ -33,14 +35,14 @@ export function Post() {
     addSuffix: true,
   });
 
+  /* /repos/DouglasPortoo/github-blog/issues/${params.id} */
   async function loadGitHubData() {
-    const response = await fetch(
-      `https://api.github.com/repos/diego3g/${params.id}`
-    );
-    const data = await response.json();
+    const response = await api.get(`/repos/DouglasPortoo/github-blog/issues/${params.id}`);
 
-    setGitHubData(data);
+    setGitHubData(response.data);
   }
+
+  console.log(gitHubData)
 
   useEffect(() => {
     loadGitHubData();
@@ -54,7 +56,7 @@ export function Post() {
       <Container>
         <InfoCard>
           <SubInfoCard>
-            <h1>{gitHubData.name}</h1>
+            <h1>{gitHubData.title}</h1>
             <Info>
               <SocialIcons>
                 <img src={github} alt="logo do github" />
@@ -79,9 +81,7 @@ export function Post() {
           </SubInfoCard>
         </InfoCard>
         <Details>
-          <p>{gitHubData.description}</p>
-          <p>visibilidade: {gitHubData.visibility}</p>
-          <p>language :{gitHubData.language}</p>
+          <Markdown>{gitHubData.body}</Markdown>
         </Details>
       </Container>
     </>

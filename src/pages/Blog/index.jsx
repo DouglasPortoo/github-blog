@@ -14,39 +14,38 @@ import user from "../../assets/icons/user.svg";
 import { Card } from "../../components/Card";
 import { useEffect, useState } from "react";
 import { InfoCard } from "../../components/InfoCard";
+import { api } from "../../server/axios";
+
+
 
 export function Blog() {
   const [gitHubData, setGitHubData] = useState([]);
   const [repositories, setRepositories] = useState([]);
   const [search, setSearch] = useState("");
-  let repo
-  const filteredRepos =
-    search.length > 0
-      ? repositories.filter((repo) => repo.name.includes(search))
-      : [];
 
   async function loadGitHubData() {
-    const response = await fetch("https://api.github.com/users/diego3g");
-    const data = await response.json();
+    const response = await api.get("/users/DouglasPortoo");
 
-    setGitHubData(data);
-
-    repo = data.repos_url;
-    loadRepositories();
+    setGitHubData(response.data);
   }
 
-  async function loadRepositories() {
-    const response = await fetch(`${repo}`);
-    const data = await response.json();
-
-    setRepositories(data);
+  async function loadRepositories(query) {
+    //https://api.github.com/search/issues?q=repo:DouglasPortoo/github-blog
+    const response = await api.get("/search/issues", {
+      params: {
+        q: query,
+      },
+    });
+    setRepositories(response.data.items);
   }
+
+  useEffect(() => {
+    loadRepositories(`repo:DouglasPortoo/github-blog${search}`);
+  }, [search]);
 
   useEffect(() => {
     loadGitHubData();
   }, []);
-
-  console.log(gitHubData)
 
   return (
     <>
@@ -87,7 +86,7 @@ export function Blog() {
         <Search>
           <Publications>
             <h1>Publicações</h1>
-            <p>{gitHubData.public_repos} publicações</p>
+            <p>1 publicações</p>
           </Publications>
 
           <input
@@ -98,13 +97,15 @@ export function Blog() {
         </Search>
 
         <Posts>
-          {search.length > 0
-            ? filteredRepos.map((repo) => (
-                <Card key={repo.id} title={repo.name} desc={repo.description} publishedAt={repo.created_at}  />
-              ))
-            : repositories.map((repo) => (
-                <Card key={repo.id} title={repo.name} desc={repo.description} publishedAt={repo.created_at}  />
-              ))}
+          {repositories.map((repo) => (
+            <Card
+              key={repo.id}
+              number={repo.number}
+              title={repo.title}
+              body={repo.body}
+              publishedAt={repo.created_at}
+            />
+          ))}
         </Posts>
       </Container>
     </>

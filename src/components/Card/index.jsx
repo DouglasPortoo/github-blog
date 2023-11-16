@@ -6,7 +6,7 @@ import { ptBR } from "date-fns/locale";
 
 import { useNavigate } from "react-router-dom";
 
-export function Card({ title, desc, publishedAt }) {
+export function Card({ title, body,number, publishedAt }) {
   const publishedAtFormated = new Date(publishedAt)
 
     const publishedDateFormatted = new Intl.DateTimeFormat("pt-BR", {
@@ -23,12 +23,12 @@ export function Card({ title, desc, publishedAt }) {
 
     const navigate = useNavigate();
 
-    function handleDetails(name) {
-      navigate(`/post/${name}`);
+    function handleDetails(numberid) {
+      navigate(`/post/${numberid}`);
     }
 
   return (
-    <Container onClick={() => handleDetails(title)}>
+    <Container onClick={() => handleDetails(number)}>
       <TitleAndTimer>
         <h1>{title}</h1>
         <time
@@ -38,7 +38,7 @@ export function Card({ title, desc, publishedAt }) {
           {publisheDataRelativeToNow}
         </time>
       </TitleAndTimer>
-      <p>{desc}</p>
+      <p>{body}</p>
     </Container>
   );
 }
