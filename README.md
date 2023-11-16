@@ -1,8 +1,17 @@
-# React + Vite
+## GitHub-Blog
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+aplicação que utilizará da API do GitHub para buscar issues de um repositório, dados do seu perfil e exibir elas como um blog.
 
-Currently, two official plugins are available:
+- Listagem do seu perfil com imagem, número de seguidores, nome e outras informações disponíveis pela API do GitHub.
+- Listar e filtrar todas as issues do repositório com um pequeno resumo do conteúdo dela
+- Criar uma página para exibir um post (issue) completo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+precisei relembrar conceitos como:
+
+- Fetch / Axios
+- Roteamento e React Router DOM
+- Formulários
+
+![image](https://github.com/DouglasPortoo/github-blog/assets/129231898/dcfdb018-8204-4240-827e-9c09790b01a4)
+![image](https://github.com/DouglasPortoo/github-blog/assets/129231898/a68d4eeb-980a-4747-af9e-191b6be125cb)
+
